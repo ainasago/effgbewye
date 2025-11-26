@@ -3,359 +3,550 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>加压刺破气球小游戏</title>
+    <title>暖冬行动 | 关爱山区儿童公益计划</title>
     <style>
-        body {
+        /* --- 全局样式重置 --- */
+        :root {
+            --primary-color: #ff6b6b; /* 温暖的红/橙色 */
+            --secondary-color: #4ecdc4; /* 清新的蓝绿色 */
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --bg-light: #f7f9fc;
+            --white: #ffffff;
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background: linear-gradient(to bottom, #87CEEB, #E0F6FF);
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-            user-select: none; /* 防止双击选中文本 */
+            box-sizing: border-box;
         }
 
-        #game-container {
-            position: relative;
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--white);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* --- 导航栏 --- */
+        header {
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--text-dark);
+            margin-left: 5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .btn-donate {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn-donate:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        /* --- Hero 区域 (首屏) --- */
+        .hero {
+            height: 100vh;
+            /* 这里使用线性渐变模拟图片，实际使用时请替换 url('image.jpg') */
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 0 1rem;
+            margin-top: 60px; /* 抵消导航栏高度 */
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-hero {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-hero:hover {
+            background: #3ebcb4;
+            transform: scale(1.05);
+        }
+
+        /* --- 通用 Section 样式 --- */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .section-title .line {
+            width: 60px;
+            height: 4px;
+            background: var(--primary-color);
+            margin: 0 auto;
+        }
+
+        /* --- 关于项目 --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .about-text p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* --- 数据统计 --- */
+        .impact {
+            background-color: var(--bg-light);
             text-align: center;
             width: 100%;
-            max-width: 500px;
+            max-width: 100%; /* 全宽背景 */
         }
 
-        /* 分数板 */
-        .stats {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        /* 气球容器 */
-        #balloon-area {
-            height: 400px;
+        .impact-container {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+            justify-content: space-around;
+            flex-wrap: wrap;
         }
 
-        /* 气球本体 */
-        #balloon {
-            width: 100px;
-            height: 120px;
-            background-color: #ff4757;
-            border-radius: 50%;
-            position: relative;
-            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.2), 5px 5px 15px rgba(0,0,0,0.2);
-            cursor: pointer;
+        .stat-item {
+            padding: 2rem;
         }
 
-            /* 气球的光泽 */
-            #balloon::after {
-                content: '';
-                position: absolute;
-                top: 15%;
-                left: 20%;
-                width: 25%;
-                height: 15%;
-                background: rgba(255,255,255,0.4);
-                border-radius: 50%;
-                transform: rotate(45deg);
-            }
-
-            /* 气球绳子 */
-            #balloon::before {
-                content: '';
-                position: absolute;
-                bottom: -10px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 2px;
-                height: 50px;
-                background: #555;
-            }
-
-        /* 充气按钮 */
-        #pump-btn {
-            margin-top: 30px;
-            padding: 15px 40px;
-            font-size: 20px;
-            background-color: #2ed573;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 5px 0 #218c74;
-            transition: all 0.1s;
-            outline: none;
-        }
-
-            #pump-btn:active {
-                transform: translateY(5px);
-                box-shadow: 0 0 0 #218c74;
-            }
-
-        /* 爆炸碎片样式 */
-        .particle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        /* 震动动画 */
-        @keyframes shake {
-            0% {
-                transform: translate(1px, 1px) rotate(0deg);
-            }
-
-            10% {
-                transform: translate(-1px, -2px) rotate(-1deg);
-            }
-
-            20% {
-                transform: translate(-3px, 0px) rotate(1deg);
-            }
-
-            30% {
-                transform: translate(3px, 2px) rotate(0deg);
-            }
-
-            40% {
-                transform: translate(1px, -1px) rotate(1deg);
-            }
-
-            50% {
-                transform: translate(-1px, 2px) rotate(-1deg);
-            }
-
-            60% {
-                transform: translate(-3px, 1px) rotate(0deg);
-            }
-
-            70% {
-                transform: translate(3px, 1px) rotate(-1deg);
-            }
-
-            80% {
-                transform: translate(-1px, -1px) rotate(1deg);
-            }
-
-            90% {
-                transform: translate(1px, 2px) rotate(0deg);
-            }
-
-            100% {
-                transform: translate(1px, -2px) rotate(-1deg);
-            }
-        }
-
-        .shaking {
-            animation: shake 0.5s;
-            animation-iteration-count: 1;
-        }
-
-        #message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 32px;
+        .stat-number {
+            font-size: 3rem;
             font-weight: bold;
-            color: #ff4757;
-            text-shadow: 2px 2px white;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+
+        /* --- 图片画廊 --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            height: 250px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 1.5rem;
+            color: white;
             opacity: 0;
-            pointer-events: none;
             transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* --- 参与方式 --- */
+        .action-cards {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            text-align: center;
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+            border-top: 5px solid var(--secondary-color);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* --- 页脚 --- */
+        footer {
+            background: #2d3436;
+            color: white;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: left;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-col p, .footer-col a {
+            color: #b2bec3;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .copyright {
+            border-top: 1px solid #636e72;
+            padding-top: 2rem;
+            color: #636e72;
+            font-size: 0.9rem;
+        }
+
+        /* --- 响应式适配 --- */
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; } /* 移动端简化：隐藏导航链接 */
+            .logo { flex-grow: 1; }
         }
     </style>
 </head>
 <body>
 
-    <div id="game-container">
-        <div class="stats">
-            成功个数: <span id="score">0</span>
-        </div>
+    <!-- 导航栏 -->
+    <header>
+        <nav>
+            <div class="logo">
+                ❤️ <span>暖冬行动</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#about">项目介绍</a></li>
+                <li><a href="#impact">行动成果</a></li>
+                <li><a href="#gallery">现场瞬间</a></li>
+                <li><a href="#action">参与方式</a></li>
+            </ul>
+            <a href="#action" class="btn-donate">立即捐赠</a>
+        </nav>
+    </header>
 
-        <div id="balloon-area">
-            <div id="balloon"></div>
-            <div id="message">BOOM!</div>
+    <!-- 首屏 Hero -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>让爱心温暖整个冬天</h1>
+            <p>我们致力于为偏远山区的孩子们提供过冬衣物和学习用品。您的一份爱心，就是他们冬天里最暖的太阳。</p>
+            <a href="#action" class="btn-hero">加入我们</a>
         </div>
+    </section>
 
-        <p style="color: #666; font-size: 14px;">点击按钮或气球充气<br>小心别吹爆了！<br>点击 "收集" 按钮安全拿分</p>
-
-        <div style="display: flex; gap: 10px; justify-content: center;">
-            <button id="pump-btn">打气 (Pump)</button>
-            <button id="collect-btn" style="background-color: #ffa502; box-shadow: 0 5px 0 #cd8400;">收集 (Collect)</button>
+    <!-- 项目介绍 -->
+    <section id="about">
+        <div class="section-title">
+            <h2>关于项目</h2>
+            <div class="line"></div>
         </div>
-    </div>
+        <div class="about-grid">
+            <div class="about-image">
+                <!-- 占位图 -->
+                <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="山区儿童">
+            </div>
+            <div class="about-text">
+                <h3>为什么我们需要您的帮助？</h3>
+                <p>在许多高海拔偏远地区，冬季气温常年低于零度。由于交通闭塞和经济落后，许多孩子缺乏足够的御寒衣物，甚至在严冬穿着单薄的鞋子步行上学。</p>
+                <p>“暖冬行动”发起于2023年，旨在汇聚社会爱心力量，为这些孩子募集羽绒服、棉鞋、围巾手套以及图书文具。我们承诺，每一份物资都会直接送到孩子手中。</p>
+                <p>我们不仅仅是送去物资，更是送去希望，告诉孩子们：外面的世界很在乎你们。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 成果展示 -->
+    <section id="impact" class="impact">
+        <div class="impact-container">
+            <div class="stat-item">
+                <span class="stat-number" data-target="5000">0</span>
+                <span class="stat-label">件过冬衣物</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="12">0</span>
+                <span class="stat-label">所受助学校</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="800">0</span>
+                <span class="stat-label">名志愿者参与</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="3000">0</span>
+                <span class="stat-label">名儿童受益</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 图片画廊 -->
+    <section id="gallery">
+        <div class="section-title">
+            <h2>温暖瞬间</h2>
+            <div class="line"></div>
+        </div>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="发放物资">
+                <div class="gallery-overlay">
+                    <p>物资抵达那一刻的笑容</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="孩子们的笑脸">
+                <div class="gallery-overlay">
+                    <p>孩子们换上了新棉衣</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="志愿者互动">
+                <div class="gallery-overlay">
+                    <p>志愿者与孩子们做游戏</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 参与方式 (Call to Action) -->
+    <section id="action">
+        <div class="section-title">
+            <h2>您可以如何帮助</h2>
+            <div class="line"></div>
+        </div>
+        <div class="action-cards">
+            <div class="card">
+                <h3>物资捐赠</h3>
+                <p>我们接受全新的冬衣、棉鞋、围巾手套，以及适合中小学生的课外读物。</p>
+                <a href="#" class="btn-outline" onclick="alert('感谢您的爱心！请联系客服微信：GongYi123')">联系捐赠</a>
+            </div>
+            <div class="card">
+                <h3>爱心善款</h3>
+                <p>您的捐款将用于统一采购羽绒服和物流运输费用，每一笔账目公开透明。</p>
+                <a href="#" class="btn-outline" onclick="alert('感谢支持！收款二维码弹窗...')">在线捐款</a>
+            </div>
+            <div class="card">
+                <h3>成为志愿者</h3>
+                <p>无论是线上宣传，还是线下物资分发，我们都需要您的加入。</p>
+                <a href="#" class="btn-outline" onclick="alert('欢迎加入！请填写报名表链接...')">加入我们</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>暖冬行动</h4>
+                <p>致力于改善偏远地区儿童生活条件的公益组织。</p>
+            </div>
+            <div class="footer-col">
+                <h4>联系我们</h4>
+                <p>电话: 010-12345678</p>
+                <p>邮箱: contact@warmwinter.org</p>
+                <p>地址: 北京市朝阳区公益路88号</p>
+            </div>
+            <div class="footer-col">
+                <h4>关注我们</h4>
+                <p>微信公众号: 暖冬公益</p>
+                <p>新浪微博: @暖冬行动</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 暖冬行动公益组织 版权所有 | 京ICP备12345678号</p>
+        </div>
+    </footer>
 
     <script>
-        // 游戏状态
-        let currentSize = 1;
-        const baseSize = 1; // 缩放基准
-        let maxLimit = 0; // 爆炸临界点 (随机)
-        let score = 0;
-        let isPopped = false;
+        // --- 简单的数字增长动画 ---
+        const stats = document.querySelectorAll('.stat-number');
+        
+        // 观察元素是否进入视口
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = +entry.target.getAttribute('data-target');
+                    const duration = 2000; // 动画持续时间
+                    const increment = target / (duration / 16); // 每次增加的数量
+                    
+                    let current = 0;
+                    const updateCount = () => {
+                        current += increment;
+                        if(current < target) {
+                            entry.target.innerText = Math.ceil(current);
+                            requestAnimationFrame(updateCount);
+                        } else {
+                            entry.target.innerText = target;
+                        }
+                    };
+                    updateCount();
+                    observer.unobserve(entry.target); // 动画只执行一次
+                }
+            });
+        }, { threshold: 0.5 });
 
-        // DOM 元素
-        const balloon = document.getElementById('balloon');
-        const pumpBtn = document.getElementById('pump-btn');
-        const collectBtn = document.getElementById('collect-btn');
-        const scoreEl = document.getElementById('score');
-        const messageEl = document.getElementById('message');
+        stats.forEach(stat => observer.observe(stat));
 
-        // 初始化游戏一局
-        function initRound() {
-            currentSize = 1;
-            isPopped = false;
-            // 随机设置爆炸上限，比如 2.5倍 到 4.5倍之间
-            maxLimit = 2.5 + Math.random() * 2.0;
-
-            // 重置气球样式
-            balloon.style.transform = `scale(${currentSize})`;
-            balloon.style.opacity = '1';
-            balloon.style.visibility = 'visible';
-
-            // 随机颜色
-            const colors = ['#ff4757', '#2ed573', '#1e90ff', '#ffa502', '#a55eea'];
-            balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-
-            messageEl.style.opacity = '0';
-        }
-
-        // 打气功能
-        function pump() {
-            if (isPopped) return;
-
-            // 增加大小
-            currentSize += 0.15; // 每次点击增加的幅度
-
-            // 应用缩放
-            balloon.style.transform = `scale(${currentSize})`;
-
-            // 添加震动效果（视觉反馈）
-            balloon.classList.remove('shaking');
-            void balloon.offsetWidth; // 触发重绘
-            balloon.classList.add('shaking');
-
-            // 检查是否爆炸
-            if (currentSize >= maxLimit) {
-                popBalloon();
-            }
-        }
-
-        // 收集功能（安全拿分）
-        function collect() {
-            if (isPopped) return;
-            if (currentSize === 1) return; // 没打气不能收集
-
-            score++;
-            scoreEl.innerText = score;
-            showMessage("成功! +1");
-
-            // 简单的缩小动画然后下一局
-            setTimeout(() => {
-                initRound();
-            }, 500);
-        }
-
-        // 爆炸逻辑
-        function popBalloon() {
-            isPopped = true;
-            createParticles();
-
-            balloon.style.visibility = 'hidden'; // 隐藏原气球
-            showMessage("BOOM!");
-
-            // 扣分或重置（可选，这里设定为不扣分但不得分）
-            // score = 0; scoreEl.innerText = score; // 如果你想让游戏更难，可以取消注释这行
-
-            // 1秒后重置
-            setTimeout(() => {
-                initRound();
-            }, 1000);
-        }
-
-        // 显示文字提示
-        function showMessage(text) {
-            messageEl.innerText = text;
-            messageEl.style.opacity = '1';
-        }
-
-        // 粒子爆炸特效
-        function createParticles() {
-            const rect = balloon.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            const color = balloon.style.backgroundColor;
-
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                particle.style.backgroundColor = color;
-                particle.style.left = centerX + 'px';
-                particle.style.top = centerY + 'px';
-
-                // 随机方向
-                const angle = Math.random() * Math.PI * 2;
-                const velocity = 5 + Math.random() * 10;
-                const tx = Math.cos(angle) * velocity * 20;
-                const ty = Math.sin(angle) * velocity * 20;
-
-                document.body.appendChild(particle);
-
-                // 粒子动画
-                const animation = particle.animate([
-                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-                    { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
-                ], {
-                    duration: 600,
-                    easing: 'ease-out'
+        // --- 平滑滚动 ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
                 });
-
-                animation.onfinish = () => particle.remove();
-            }
-        }
-
-        // 事件监听
-        pumpBtn.addEventListener('click', pump);
-
-        // 点击气球本身也可以打气
-        balloon.addEventListener('click', pump);
-
-        collectBtn.addEventListener('click', collect);
-
-        // 键盘支持 (空格打气)
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
-                pump();
-                // 按钮按下的视觉效果
-                pumpBtn.style.transform = 'translateY(5px)';
-                pumpBtn.style.boxShadow = '0 0 0 #218c74';
-            }
+            });
         });
-
-        document.addEventListener('keyup', (e) => {
-            if (e.code === 'Space') {
-                pumpBtn.style.transform = '';
-                pumpBtn.style.boxShadow = '';
-            }
-        });
-
-
-        // 启动游戏
-        initRound();
-
     </script>
 </body>
 </html>
